@@ -33,9 +33,19 @@ class _SliderRanState extends State<SliderRan> {
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: [
-                showText("From", minTextController),
+                showText(
+                  "From",
+                  minTextController,
+                  onC: (value) {
+                    rang = RangeValues(double.parse(value), rang.end);
+                    setState(() {});
+                  },
+                ),
                 const Spacer(flex: 1),
-                showText("To", maxTextController),
+                showText("To", maxTextController, onC: (value) {
+                  rang = RangeValues(rang.start, double.parse(value));
+                  setState(() {});
+                }),
               ],
             ),
           )
@@ -44,7 +54,8 @@ class _SliderRanState extends State<SliderRan> {
     );
   }
 
-  Widget showText(String title, TextEditingController controller) {
+  Widget showText(String title, TextEditingController controller,
+      {Function(String)? onC}) {
     return Expanded(
       flex: 3,
       child: Column(
@@ -53,6 +64,7 @@ class _SliderRanState extends State<SliderRan> {
           Text(title),
           TextField(
             controller: controller,
+            onChanged: onC,
             decoration: const InputDecoration(
               enabledBorder: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(),
