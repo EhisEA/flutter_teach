@@ -1,4 +1,5 @@
 import 'package:flu_cu_001/home.dart';
+import 'package:flu_cu_001/splash.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +17,6 @@ void main() {
       // is not restarted.
       primarySwatch: Colors.blue,
     ),
-    home: Home(),
+    home: Splash(),
   ));
 }

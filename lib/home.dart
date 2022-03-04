@@ -1,4 +1,6 @@
+import 'package:flu_cu_001/login.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -41,12 +43,25 @@ class _HomeState extends State<Home> {
               SizedBox(height: 20),
               TextField(
                 onChanged: (val) {
-                  setState(() {
-                    // await Future.delayed(Duration(seconds: 1));
-                    showFav = !showFav;
-                  });
+                  setState(
+                    () {
+                      // await Future.delayed(Duration(seconds: 1));
+                      showFav = !showFav;
+                    },
+                  );
                 },
-              )
+              ),
+
+              ElevatedButton(
+                onPressed: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.clear();
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Login()));
+                },
+                child: Text("Log out"),
+              ),
             ],
           ),
         ),
