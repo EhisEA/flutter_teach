@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SliderRan extends StatefulWidget {
   const SliderRan({Key? key}) : super(key: key);
@@ -37,14 +38,36 @@ class _SliderRanState extends State<SliderRan> {
                   "From",
                   minTextController,
                   onC: (value) {
-                    rang = RangeValues(double.parse(value), rang.end);
+                    late double val;
+                    if (double.tryParse(value) != null) {
+                      val = double.parse(value);
+                    } else if (int.tryParse(value) != null) {
+                      val = int.parse(value).toDouble();
+                    } else {
+                      val = 1.0;
+                    }
+                    if (val >= rang.end) return;
+                    rang = RangeValues(val, rang.end);
                     setState(() {});
                   },
                 ),
                 const Spacer(flex: 1),
                 showText("To", maxTextController, onC: (value) {
-                  rang = RangeValues(rang.start, double.parse(value));
+                  late double val;
+                  if (double.tryParse(value) != null) {
+                    val = double.parse(value);
+                  } else if (int.tryParse(value) != null) {
+                    val = int.parse(value).toDouble();
+                  } else {
+                    val = 1.0;
+                  }
+
+                  if (val <= rang.start) return;
+                  rang = RangeValues(rang.start, val);
                   setState(() {});
+                  if (val > 120) {
+                    rang = RangeValues(rang.start, val);
+                  }
                 }),
               ],
             ),
@@ -65,6 +88,7 @@ class _SliderRanState extends State<SliderRan> {
           TextField(
             controller: controller,
             onChanged: onC,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: const InputDecoration(
               enabledBorder: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(),
